@@ -3,7 +3,7 @@ name: Update Script
 on:
   push:
     branches:
-    - main
+    - master
 
 permissions:
   id-token: write
@@ -21,7 +21,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v2
       with:
         role-to-assume: ${{ secrets.S3_ACCESS_ARN }}
-        role-session-name: websitedeploy
+        role-session-name: script deploy
         aws-region: ${{ env.AWS_DEFAULT_REGION }}
 
     - name: Checkout
