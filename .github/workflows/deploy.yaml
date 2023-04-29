@@ -18,7 +18,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: script
-          path: scripts/visit_counter.py
+          path: scripts/
 
   deploy:
     runs-on: ubuntu-latest
