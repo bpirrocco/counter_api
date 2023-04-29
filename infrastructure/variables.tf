@@ -4,3 +4,8 @@ variable "project_name" {
 variable "region" {
     default = "us-east-1"
 }
+
+variable "iam_access_id" {
+    type        = string
+    description = "My IAM Access ID"
+}
