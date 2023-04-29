@@ -18,7 +18,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Script
-        path: counter_api/visit_counter.py
+        path: ./
         retention-days: 5
 
   deploy:
