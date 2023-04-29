@@ -1,46 +1,51 @@
-name: Update Script
+# name: Update Script
 
-on:
-  push:
-    branches:
-    - main
+# on:
+#   push:
+#     branches:
+#     - main
 
-permissions:
-  id-token: write
-  contents: read
+# permissions:
+#   id-token: write
+#   contents: read
 
-jobs:
-  zip-files:
-    runs-on: ubuntu-latest
+# jobs:
+#   zip-files:
+#     runs-on: ubuntu-latest
 
-    steps:
+#     steps:
 
-      - uses: actions/checkout@v3
-      - uses: actions/upload-artifact@v3
-        with:
-          name: script
-          path: scripts/
+#       - uses: actions/checkout@v3
+#       - uses: actions/upload-artifact@v3
+#         with:
+#           name: script
+#           path: scripts/
 
-  deploy:
-    runs-on: ubuntu-latest
+#   download-files:
+#     runs-on: ubuntu-latest
 
-    env:
-      AWS_DEFAULT_REGION: us-east-1
-    steps:
+#   steps
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        role-to-assume: ${{ secrets.S3_ACCESS_ARN }}
-        role-session-name: scriptdeploy
-        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+#   deploy:
+#     runs-on: ubuntu-latest
 
-    - name: Checkout
-      uses: actions/checkout@v3
+#     env:
+#       AWS_DEFAULT_REGION: us-east-1
+#     steps:
 
-    - name: Deploy lambda script to S3 bucket
-      uses: clowdhaus/aws-github-actions/s3_sync@main
-      with:
-        local-path: ./visit_counter.zip
-        bucket-name: counterapi
-        args: --exclude ".DS_Store" --exclude ".git/*" --exclude ".gitignore" --exclude ".github/*" --exclude "README.md" --cache-control "max-age=300" --delete
+#     - name: Configure AWS Credentials
+#       uses: aws-actions/configure-aws-credentials@v2
+#       with:
+#         role-to-assume: ${{ secrets.S3_ACCESS_ARN }}
+#         role-session-name: scriptdeploy
+#         aws-region: ${{ env.AWS_DEFAULT_REGION }}
+
+#     - name: Checkout
+#       uses: actions/checkout@v3
+
+#     - name: Deploy lambda script to S3 bucket
+#       uses: clowdhaus/aws-github-actions/s3_sync@main
+#       with:
+#         local-path: ./visit_counter.zip
+#         bucket-name: counterapi
+#         args: --exclude ".DS_Store" --exclude ".git/*" --exclude ".gitignore" --exclude ".github/*" --exclude "README.md" --cache-control "max-age=300" --delete
