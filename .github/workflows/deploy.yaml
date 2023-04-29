@@ -10,12 +10,13 @@ permissions:
   contents: read
 
 jobs:
+  zip-files:
   - name: Generate Report
     uses: actions/upload-artifact@v2
     with:
-    name: Script
-    path: ./visit_counter.py
-    retention-days: 5
+      name: Script
+      path: ./visit_counter.py
+      retention-days: 5
 
   deploy:
     runs-on: ubuntu-latest
