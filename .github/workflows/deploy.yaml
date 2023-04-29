@@ -1,0 +1,36 @@
+name: Update Script
+
+on:
+  push:
+    branches:
+    - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_DEFAULT_REGION: us-east-1
+    steps:
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: ${{ secrets.S3_ACCESS_ARN }}
+        role-session-name: websitedeploy
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Deploy lambda script to S3 bucket
+    #   run: aws s3 sync ./ s3://arn:aws:s3:us-east-1:249566334604:accesspoint/bpdev-github-access --delete
+      uses: clowdhaus/aws-github-actions/s3_sync@main
+      with:
+        local-path: ./
+        bucket-name: counterapi
+        args: --exclude ".DS_Store" --exclude ".git/*" --exclude ".gitignore" --exclude ".github/*" --cache-control "max-age=300" --delete

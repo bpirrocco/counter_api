@@ -6,3 +6,6 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps('Hello from Lambda!')
     }
+
+
+# I just updated this repo and the change was pushed to s3
