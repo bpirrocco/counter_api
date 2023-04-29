@@ -13,8 +13,9 @@ jobs:
   zip-files:
     runs-on: ubuntu-latest
 
+    steps:
     - name: Generate Report
-     uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
         name: Script
         path: ./visit_counter.py
