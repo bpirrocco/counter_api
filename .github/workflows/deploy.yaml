@@ -14,12 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Generate Report
-      uses: actions/upload-artifact@v2
-      with:
-        name: Script
-        path: ./
-        retention-days: 5
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: script
+          path: scripts/visit_counter.py
 
   deploy:
     runs-on: ubuntu-latest
