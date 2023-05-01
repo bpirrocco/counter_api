@@ -33,3 +33,7 @@ override.tf.json
 .terraformrc
 terraform.rc
 .terraform.lock.hcl
+
+# Virtual Env
+counter_api-venv
+counter_api-venv/*
