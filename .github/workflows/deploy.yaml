@@ -29,9 +29,10 @@ jobs:
 
     steps:
 
-      - name: Create bullpen
+      - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Create bullpen
         run: mkdir -p bullpen
 
       - name: Add zip to bullpen
@@ -69,8 +70,9 @@ jobs:
 
     steps:
 
-    - name: Cleanup Bullpen
+    - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Cleanup bullpen
       run: rm -r bullpen
 
