@@ -70,7 +70,7 @@ jobs:
     steps:
 
     - name: Cleanup Bullpen
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
       run: rm -r bullpen
 
