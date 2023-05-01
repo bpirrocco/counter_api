@@ -1,4 +1,5 @@
 import json
+import DynamORM
 
 def lambda_handler(event, context):
     # TODO implement
