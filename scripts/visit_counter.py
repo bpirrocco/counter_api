@@ -14,7 +14,7 @@ class VisitCounter:
             dyn_resource: A Boto3 DynamoDB resource
         """
         self.dyn_resource = dyn_resource
-        self.table = None
+        self.table = "Counter"
 
     def get_count(self, count):
         """Gets counter item from table and reads its value.
@@ -39,10 +39,18 @@ class VisitCounter:
 
 def lambda_handler(event, context):
     # TODO implement
-    dyn_resource = boto3.resource('dynamodb')
-    count = VisitCounter(dyn_resource)
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('Counter')
+    response = table.get_item(
+    Key={
+        'Count': 'Counter'
+    }
+    )
+    item = response['Item']
+    d = item['Value']
+    count = {'Count': int(d)}
     return {
         'statusCode': 200,
-        'body': count.get_count(count="Counter")
+        'body': json.dumps(count)
     }
 
