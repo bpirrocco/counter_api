@@ -1,0 +1,88 @@
+name: Update Script
+
+on:
+  push:
+    branches:
+    - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  zip-files:
+    name: zip-files
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create zip 
+        uses: actions/upload-artifact@v3
+        with:
+          name: script
+          path: scripts/
+
+  download-files:
+    name: download-files
+    needs: zip-files
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create bullpen
+        run: mkdir -p bullpen
+
+      - name: Add zip to bullpen
+        uses: actions/download-artifact@v3
+        with:
+          name: script
+          path: bullpen/
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+  deploy:
+    name: deploy
+    needs: [zip-files, download-files]
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_DEFAULT_REGION: us-east-1
+    steps:
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: ${{ secrets.S3_ACCESS_ARN }}
+        role-session-name: scriptdeploy
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Deploy lambda script to S3 bucket
+      uses: clowdhaus/aws-github-actions/s3_sync@main
+      with:
+        local-path: ./bullpen
+        bucket-name: counterapi
+        args: --exclude ".DS_Store" --exclude ".git/*" --exclude ".gitignore" --exclude ".github/*" --exclude "README.md" --cache-control "max-age=300" --delete
+
+  cleanup:
+    name: cleanup
+    needs: [zip-files, download-files, deploy]
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Cleanup bullpen
+      run: rm -r bullpen
+
