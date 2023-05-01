@@ -72,5 +72,5 @@ jobs:
     - name: Cleanup Bullpen
     - uses: actions/checkout@v3
 
-      run: rm -r bullpen
+    - run: rm -r bullpen
 
