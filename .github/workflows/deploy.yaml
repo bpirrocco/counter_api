@@ -69,7 +69,7 @@ jobs:
     - name: Deploy lambda script to S3 bucket
       uses: clowdhaus/aws-github-actions/s3_sync@main
       with:
-        local-path: bullpen
+        local-path: ./bullpen
         bucket-name: counterapi
         args: --exclude ".DS_Store" --exclude ".git/*" --exclude ".gitignore" --exclude ".github/*" --exclude "README.md" --cache-control "max-age=300" --delete
 
