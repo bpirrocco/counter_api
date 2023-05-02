@@ -58,7 +58,7 @@ class VisitCounter:
                 err.response['Error']['Code'], err.response['Error']['Message'])
             raise
         else:
-            return {'Count': count}
+            return count
 
 def lambda_handler(event, context):
     # TODO implement
