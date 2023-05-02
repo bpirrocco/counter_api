@@ -26,7 +26,7 @@ class VisitCounter:
             response = self.table.get_item(Key={'Count': name})
             item = response['Item']
             d = item['Value']
-            counter = {'Count': int(d)}
+            counter = int(d)
         except ClientError as err:
             logger.error(
                 "Couldn't get count %s from table %s. Here's why: %s: %s",
@@ -58,7 +58,7 @@ class VisitCounter:
                 err.response['Error']['Code'], err.response['Error']['Message'])
             raise
         else:
-            return count
+            return {'Count': count}
 
 def lambda_handler(event, context):
     # TODO implement
