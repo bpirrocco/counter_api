@@ -47,14 +47,14 @@ class VisitCounter:
         try:
             count += 1
             response = self.table.update_item(Key={'Count': name},
-                                              UpdateExpression='SET Value = :val1',
+                                              UpdateExpression='SET Val = :val1',
                                               ExpressionAttributeValues={
                                                 ':val1': count
                                               })
         except ClientError as err:
             logger.error(
                 "Couldn't update count %s from table %s. Here's why: %s: %s",
-                self.table.name,
+                count, self.table.name,
                 err.response['Error']['Code'], err.response['Error']['Message'])
             raise
         else:
