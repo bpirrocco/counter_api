@@ -16,14 +16,14 @@ class VisitCounter:
         self.dyn_resource = dyn_resource
         self.table = dyn_resource.Table(table)
 
-    def get_count(self, count):
+    def get_count(self, name):
         """Gets counter item from table and reads its value.
         
             Args:
-                count: value of Count partition key
+                name: value of Count partition key
         """
         try:
-            response = self.table.get_item(Key={'Count': count})
+            response = self.table.get_item(Key={'Count': name})
             item = response['Item']
             d = item['Value']
             counter = {'Count': int(d)}
@@ -36,22 +36,33 @@ class VisitCounter:
         else:
             return counter
 
-    # def update_count(self, count):
-    #     """Update"""
+    def update_count(self, name, count):
+        """Update counter item and return it to the table
+        
+            Args:
+                name: value of Count partition key
+
+                count: current value of counter item
+        """
+        try:
+            count += 1
+            response = self.table.update_item(Key={'Count': name},
+                                              UpdateExpression='SET Value = :val1',
+                                              ExpressionAttributeValues={
+                                                ':val1': count
+                                              })
+        except ClientError as err:
+            logger.error(
+                "Couldn't update count %s from table %s. Here's why: %s: %s",
+                self.table.name,
+                err.response['Error']['Code'], err.response['Error']['Message'])
+            raise
 
 
 def lambda_handler(event, context):
     # TODO implement
     dynamodb = boto3.resource('dynamodb')
     table = "Counter"
-    # response = table.get_item(
-    # Key={
-    #     'Count': 'Counter'
-    # }
-    # )
-    # item = response['Item']
-    # d = item['Value']
-    # count = {'Count': int(d)}
     counter = VisitCounter(dynamodb, table)
     count = counter.get_count("Counter")
     return {
