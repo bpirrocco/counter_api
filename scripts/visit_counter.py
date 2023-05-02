@@ -25,7 +25,7 @@ class VisitCounter:
         try:
             response = self.table.get_item(Key={'Count': name})
             item = response['Item']
-            d = item['Value']
+            d = item['Val']
             counter = int(d)
         except ClientError as err:
             logger.error(
