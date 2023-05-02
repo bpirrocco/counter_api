@@ -57,16 +57,18 @@ class VisitCounter:
                 self.table.name,
                 err.response['Error']['Code'], err.response['Error']['Message'])
             raise
-
+        else:
+            return count
 
 def lambda_handler(event, context):
     # TODO implement
     dynamodb = boto3.resource('dynamodb')
     table = "Counter"
     counter = VisitCounter(dynamodb, table)
-    count = counter.get_count("Counter")
+    pre_count = counter.get_count(table)
+    post_count = counter.update_count(table, pre_count)
     return {
         'statusCode': 200,
-        'body': json.dumps(count)
+        'body': json.dumps(post_count)
     }
 
